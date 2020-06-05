@@ -7,22 +7,23 @@ using System.Threading.Tasks;
 
 namespace WebApplication1.Models
 {
-    public class Doctor
+    public class Medicament
     {
-        public Doctor()
+        public Medicament()
         {
-            Prescriptions = new HashSet<Prescription>();
+            PrescriptionMedicaments = new HashSet<PrescriptionMedicament>();
         }
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int IdDoctor { get; set; }
+        public int IdMedicament { get; set; }
         [MaxLength(100)]
-        public string FirstName { get; set; }
+        public string Name { get; set; }
         [MaxLength(100)]
-        public string LastName { get; set; }
+        public string Description { get; set; }
         [MaxLength(100)]
-        public string Email { get; set; }
-        public virtual ICollection<Prescription> Prescriptions { get; set; }
+        public string Type { get; set; }
+
+        public virtual ICollection<PrescriptionMedicament> PrescriptionMedicaments { get; set; }
     }
 }

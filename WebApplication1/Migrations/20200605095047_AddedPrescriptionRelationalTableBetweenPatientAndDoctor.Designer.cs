@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApplication1.Models;
 
 namespace WebApplication1.Migrations
 {
     [DbContext(typeof(DoctorsDbContext))]
-    partial class DoctorsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200605095047_AddedPrescriptionRelationalTableBetweenPatientAndDoctor")]
+    partial class AddedPrescriptionRelationalTableBetweenPatientAndDoctor
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,30 +43,6 @@ namespace WebApplication1.Migrations
                     b.HasKey("IdDoctor");
 
                     b.ToTable("Doctors");
-                });
-
-            modelBuilder.Entity("WebApplication1.Models.Medicament", b =>
-                {
-                    b.Property<int>("IdMedicament")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(100)")
-                        .HasMaxLength(100);
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(100)")
-                        .HasMaxLength(100);
-
-                    b.Property<string>("Type")
-                        .HasColumnType("nvarchar(100)")
-                        .HasMaxLength(100);
-
-                    b.HasKey("IdMedicament");
-
-                    b.ToTable("Medicaments");
                 });
 
             modelBuilder.Entity("WebApplication1.Models.Patient", b =>
@@ -118,28 +96,6 @@ namespace WebApplication1.Migrations
                     b.ToTable("Prescriptions");
                 });
 
-            modelBuilder.Entity("WebApplication1.Models.PrescriptionMedicament", b =>
-                {
-                    b.Property<int>("IdPrescriptionMedicament")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("IdMedicament")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdPrescription")
-                        .HasColumnType("int");
-
-                    b.HasKey("IdPrescriptionMedicament");
-
-                    b.HasIndex("IdMedicament");
-
-                    b.HasIndex("IdPrescription");
-
-                    b.ToTable("PrescriptionMedicaments");
-                });
-
             modelBuilder.Entity("WebApplication1.Models.Prescription", b =>
                 {
                     b.HasOne("WebApplication1.Models.Doctor", "Doctor")
@@ -151,21 +107,6 @@ namespace WebApplication1.Migrations
                     b.HasOne("WebApplication1.Models.Patient", "Patient")
                         .WithMany("Prescriptions")
                         .HasForeignKey("IdPatient")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("WebApplication1.Models.PrescriptionMedicament", b =>
-                {
-                    b.HasOne("WebApplication1.Models.Medicament", "Medicament")
-                        .WithMany("PrescriptionMedicaments")
-                        .HasForeignKey("IdMedicament")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("WebApplication1.Models.Prescription", "Prescription")
-                        .WithMany("PrescriptionMedicaments")
-                        .HasForeignKey("IdPrescription")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
